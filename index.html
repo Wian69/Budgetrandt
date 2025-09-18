@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Budgetrandt</title>
+  <title>Budgetrandt ZAR</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
       padding: 20px;
     }
     .container {
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
       background: white;
       padding: 20px;
@@ -42,21 +42,25 @@
 </head>
 <body>
   <div class="container">
-    <h1>Budgetrandt</h1>
+    <h1>Budgetrandt (ZAR)</h1>
     <div class="form">
       <input type="text" id="desc" placeholder="Description" />
-      <input type="number" id="amount" placeholder="Amount" />
+      <input type="number" id="amount" placeholder="Amount in ZAR" />
       <select id="type">
         <option value="income">Income</option>
         <option value="expense">Expense</option>
+        <option value="rent">Rent</option>
+        <option value="utilities">Utilities</option>
+        <option value="transport">Transport</option>
+        <option value="food">Food</option>
       </select>
       <button onclick="addItem()">Add</button>
     </div>
 
     <div class="summary">
-      <p>Total Income: <span id="total-income">0</span></p>
-      <p>Total Expenses: <span id="total-expense">0</span></p>
-      <p>Balance: <span id="balance">0</span></p>
+      <p>Total Income (ZAR): <span id="total-income">0</span></p>
+      <p>Total Expenses (ZAR): <span id="total-expense">0</span></p>
+      <p>Balance (ZAR): <span id="balance">0</span></p>
     </div>
 
     <ul id="list"></ul>
@@ -75,7 +79,7 @@
 
       const list = document.getElementById("list");
       const item = document.createElement("li");
-      item.textContent = `${type.toUpperCase()}: ${desc} - $${amount.toFixed(2)}`;
+      item.textContent = `${type.toUpperCase()}: ${desc} - R${amount.toFixed(2)}`;
       list.appendChild(item);
 
       if (type === "income") {
