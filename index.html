@@ -38,63 +38,79 @@
       padding: 8px;
       border-bottom: 1px solid #ccc;
     }
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Budgetrandt (ZAR)</h1>
-    <div class="form">
-      <input type="text" id="desc" placeholder="Description" />
-      <input type="number" id="amount" placeholder="Amount in ZAR" />
-      <select id="type">
-        <option value="income">Income</option>
-        <option value="expense">Expense</option>
-        <option value="rent">Rent</option>
-        <option value="utilities">Utilities</option>
-        <option value="transport">Transport</option>
-        <option value="food">Food</option>
-      </select>
-      <button onclick="addItem()">Add</button>
+
+    <div id="income-page">
+      <p>Enter your total income:</p>
+      <input type="number" id="initial-income" placeholder="Income in ZAR" />
+      <button onclick="submitIncome()">Submit Income</button>
     </div>
 
-    <div class="summary">
-      <p>Total Income (ZAR): <span id="total-income">0</span></p>
-      <p>Total Expenses (ZAR): <span id="total-expense">0</span></p>
-      <p>Balance (ZAR): <span id="balance">0</span></p>
-    </div>
+    <div id="expense-page" class="hidden">
+      <div class="form">
+        <input type="text" id="desc" placeholder="Expense Description" />
+        <input type="number" id="amount" placeholder="Amount in ZAR" />
+        <select id="type">
+          <option value="expense">General Expense</option>
+          <option value="rent">Rent</option>
+          <option value="utilities">Utilities</option>
+          <option value="transport">Transport</option>
+          <option value="food">Food</option>
+        </select>
+        <button onclick="addExpense()">Add Expense</button>
+      </div>
 
-    <ul id="list"></ul>
+      <div class="summary">
+        <p>Total Income (ZAR): <span id="total-income">0</span></p>
+        <p>Total Expenses (ZAR): <span id="total-expense">0</span></p>
+        <p>Balance (ZAR): <span id="balance">0</span></p>
+      </div>
+
+      <ul id="list"></ul>
+    </div>
   </div>
 
   <script>
     let income = 0;
     let expense = 0;
 
-    function addItem() {
+    function submitIncome() {
+      const inputIncome = parseFloat(document.getElementById("initial-income").value);
+      if (isNaN(inputIncome) || inputIncome <= 0) return;
+      income = inputIncome;
+      document.getElementById("total-income").textContent = income.toFixed(2);
+      document.getElementById("income-page").classList.add("hidden");
+      document.getElementById("expense-page").classList.remove("hidden");
+      updateSummary();
+    }
+
+    function addExpense() {
       const desc = document.getElementById("desc").value;
       const amount = parseFloat(document.getElementById("amount").value);
       const type = document.getElementById("type").value;
 
-      if (!desc || isNaN(amount)) return;
+      if (!desc || isNaN(amount) || amount <= 0) return;
 
       const list = document.getElementById("list");
       const item = document.createElement("li");
       item.textContent = `${type.toUpperCase()}: ${desc} - R${amount.toFixed(2)}`;
       list.appendChild(item);
 
-      if (type === "income") {
-        income += amount;
-      } else {
-        expense += amount;
-      }
-
+      expense += amount;
       updateSummary();
+
       document.getElementById("desc").value = "";
       document.getElementById("amount").value = "";
     }
 
     function updateSummary() {
-      document.getElementById("total-income").textContent = income.toFixed(2);
       document.getElementById("total-expense").textContent = expense.toFixed(2);
       document.getElementById("balance").textContent = (income - expense).toFixed(2);
     }
