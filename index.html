@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budgetrandt</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .form input, .form select, .form button {
+      margin: 5px 0;
+      padding: 10px;
+      width: 100%;
+    }
+    .summary p {
+      font-weight: bold;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 8px;
+      border-bottom: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Budgetrandt</h1>
+    <div class="form">
+      <input type="text" id="desc" placeholder="Description" />
+      <input type="number" id="amount" placeholder="Amount" />
+      <select id="type">
+        <option value="income">Income</option>
+        <option value="expense">Expense</option>
+      </select>
+      <button onclick="addItem()">Add</button>
+    </div>
+
+    <div class="summary">
+      <p>Total Income: <span id="total-income">0</span></p>
+      <p>Total Expenses: <span id="total-expense">0</span></p>
+      <p>Balance: <span id="balance">0</span></p>
+    </div>
+
+    <ul id="list"></ul>
+  </div>
+
+  <script>
+    let income = 0;
+    let expense = 0;
+
+    function addItem() {
+      const desc = document.getElementById("desc").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+      const type = document.getElementById("type").value;
+
+      if (!desc || isNaN(amount)) return;
+
+      const list = document.getElementById("list");
+      const item = document.createElement("li");
+      item.textContent = `${type.toUpperCase()}: ${desc} - $${amount.toFixed(2)}`;
+      list.appendChild(item);
+
+      if (type === "income") {
+        income += amount;
+      } else {
+        expense += amount;
+      }
+
+      updateSummary();
+      document.getElementById("desc").value = "";
+      document.getElementById("amount").value = "";
+    }
+
+    function updateSummary() {
+      document.getElementById("total-income").textContent = income.toFixed(2);
+      document.getElementById("total-expense").textContent = expense.toFixed(2);
+      document.getElementById("balance").textContent = (income - expense).toFixed(2);
+    }
+  </script>
+</body>
+</html>
